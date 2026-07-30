@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - AI Movie Recommender System</title>
+    <meta name="description" content="Discover your next favorite movie with CineMatch - a modern content-based AI movie recommender system powered by TMDB.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Dynamic Backdrop Overlay -->
+    <div id="backdrop-bg" class="backdrop-bg"></div>
+    <div class="backdrop-overlay"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-film logo-icon"></i>
+                <span class="logo-text">Cine<span class="highlight">Match</span></span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#discover" class="nav-link active" id="nav-discover"><i class="fa-solid fa-compass"></i> Discover</a>
+                <a href="#moods" class="nav-link" id="nav-moods"><i class="fa-solid fa-wand-magic-sparkles"></i> Moods</a>
+                <a href="#watchlist-section" class="nav-link" id="watchlist-nav-btn">
+                    <i class="fa-solid fa-bookmark"></i> Watchlist <span id="watchlist-count" class="badge">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        
+        <!-- Hero Spotlight Section -->
+        <section id="hero-spotlight" class="hero-section">
+            <div class="hero-content" id="hero-card">
+                <div class="hero-poster-container">
+                    <img id="hero-poster" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop" alt="Featured Movie Poster" class="hero-poster">
+                </div>
+                <div class="hero-details">
+                    <div class="hero-badges">
+                        <span id="hero-rating" class="rating-badge"><i class="fa-solid fa-star"></i> 8.6</span>
+                        <span id="hero-year" class="year-badge">2014</span>
+                        <span id="hero-runtime" class="runtime-badge">169 mins</span>
+                    </div>
+                    <h1 id="hero-title" class="hero-title">Interstellar</h1>
+                    <p id="hero-tagline" class="hero-tagline">"Mankind was born on Earth. It was never meant to die here."</p>
+                    <div id="hero-genres" class="genre-pills">
+                        <span class="genre-pill">Adventure</span>
+                        <span class="genre-pill">Drama</span>
+                        <span class="genre-pill">Sci-Fi</span>
+                    </div>
+                    <p id="hero-overview" class="hero-overview">
+                        The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.
+                    </p>
+                    <div class="hero-actions">
+                        <button id="hero-trailer-btn" class="btn btn-primary">
+                            <i class="fa-solid fa-play"></i> Watch Trailer
+                        </button>
+                        <button id="hero-watchlist-btn" class="btn btn-secondary">
+                            <i class="fa-solid fa-plus"></i> Add to Watchlist
+                        </button>
+                        <button id="hero-recommend-btn" class="btn btn-accent">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Find Similar Movies
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search & Control Center -->
+        <section class="control-center">
+            <div class="search-box-container">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search movies (e.g. Inception, The Dark Knight, Avatar)..." autocomplete="off">
+                    <button id="clear-search-btn" class="clear-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="search-results-dropdown" class="search-dropdown hidden"></div>
+            </div>
+
+            <!-- Mood Filter Chips -->
+            <div class="mood-container" id="moods">
+                <span class="mood-label"><i class="fa-solid fa-face-smile"></i> Pick a Vibe:</span>
+                <div class="mood-chips">
+                    <button class="mood-chip active" data-mood="all"><i class="fa-solid fa-border-all"></i> All Movies</button>
+                    <button class="mood-chip" data-mood="action"><i class="fa-solid fa-fire-flame-curved"></i> Action Packed</button>
+                    <button class="mood-chip" data-mood="scifi"><i class="fa-solid fa-shuttle-space"></i> Mind-Bending</button>
+                    <button class="mood-chip" data-mood="horror"><i class="fa-solid fa-ghost"></i> Spooky Thrills</button>
+                    <button class="mood-chip" data-mood="romance"><i class="fa-solid fa-heart"></i> Heartfelt Romance</button>
+                    <button class="mood-chip" data-mood="comedy"><i class="fa-solid fa-face-laugh-beam"></i> Laugh Out Loud</button>
+                    <button class="mood-chip" data-mood="top"><i class="fa-solid fa-trophy"></i> Masterpieces</button>
+                </div>
+            </div>
+
+            <!-- Additional Filters Bar -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label for="rating-filter"><i class="fa-solid fa-star"></i> Min Rating:</label>
+                    <select id="rating-filter">
+                        <option value="0">All Ratings</option>
+                        <option value="7">⭐ 7.0+ Stars</option>
+                        <option value="8">⭐ 8.0+ Stars (Top Rated)</option>
+                        <option value="8.5">⭐ 8.5+ Stars (Legendary)</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sort-filter"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
+                    <select id="sort-filter">
+                        <option value="popularity">Popularity</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="release_date">Release Date</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Grid Section -->
+        <section id="discover" class="recommendations-section">
+            <div class="section-header">
+                <h2 id="section-title" class="section-title">
+                    <i class="fa-solid fa-sparkles"></i> Recommended For You
+                </h2>
+                <span id="result-count" class="result-count">Showing 10 movies</span>
+            </div>
+
+            <!-- Loader Spinner -->
+            <div id="loader" class="loader-container hidden">
+                <div class="spinner"></div>
+                <p>Curating personalized movie choices...</p>
+            </div>
+
+            <!-- Movie Grid -->
+            <div id="movie-grid" class="movie-grid">
+                <!-- Movie cards rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- Top Cast & Crew Section -->
+        <section id="cast-section" class="cast-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-users"></i> Featured Cast & Crew</h2>
+            </div>
+            <div id="cast-grid" class="cast-grid">
+                <!-- Cast cards rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- Watchlist Section -->
+        <section id="watchlist-section" class="watchlist-section hidden">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-bookmark"></i> Your Personal Watchlist</h2>
+                <button id="clear-watchlist-btn" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i> Clear All</button>
+            </div>
+            <div id="watchlist-grid" class="movie-grid">
+                <!-- Watchlist cards -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Trailer Modal -->
+    <div id="trailer-modal" class="modal hidden">
+        <div class="modal-overlay" id="modal-close-overlay"></div>
+        <div class="modal-container">
+            <button id="modal-close-btn" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="modal-movie-title" class="modal-title">Movie Trailer</h3>
+            <div class="video-responsive">
+                <iframe id="trailer-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <i class="fa-solid fa-film"></i> CineMatch AI Recommender
+            </div>
+            <p class="footer-text">
+                Crafted with passion for cinema lovers. Powered by <strong>The Movie Database (TMDB) API</strong> & Content-Based ML.
+            </p>
+            <div class="footer-links">
+                <a href="https://github.com/TANISHQDAS/Movie-Recommender-System" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-github"></i> GitHub Repository
+                </a>
+                <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-database"></i> TMDB API
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
